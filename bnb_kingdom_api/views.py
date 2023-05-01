@@ -312,7 +312,7 @@ def calc_percent_introduced(F):
 def calc_day(day):
     if day == 90:
         return 0.07/90
-   if day == 150:
+    if day == 150:
         return 0.08/150
     if day == 180:
         return 0.09/180
