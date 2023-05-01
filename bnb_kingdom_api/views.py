@@ -288,42 +288,40 @@ def auto_pay_interest(req, wallet_address ):
         "error": 'sorry'
     })
 
-def calc_percent_introduced(F_introduction):
-    match F_introduction:
-        case 'F1':
-            return 0.08
-        case 'F2':
-            return 0.03
-        case 'F3':
-            return 0.01
-        case 'F4':
-            return 0.01
-        case 'F5':
-            return 0.05
-        case 'F6':
-            return 0.005
-        case 'F7':
-            return 0.005
-        case 'F8':
-            return 0.005
-        case 'F9':
-            return 0.005
-        case 'F10':
-            return 0.005
+def calc_percent_introduced(F):
+    if F == 'F1':
+        return 0.08
+    if F == 'F2':
+        return 0.03
+    if F == 'F3':
+        return 0.01
+    if F == 'F4':
+        return 0.01
+    if F == 'F5':
+        return 0.05
+    if F == 'F6':
+        return 0.005
+    if F == 'F7':
+        return 0.005
+    if F == 'F8':
+        return 0.005
+    if F == 'F9':
+        return 0.005
+    if F == 'F10':
+        return 0.005
 def calc_day(day):
-    match day:
-        case 90:
-            return 0.07/90
-        case 150:
-            return 0.08/150
-        case 180:
-            return 0.09/180
-        case 240:
-            return 0.1/240
-        case 300:
-            return 0.11/300
-        case 360:
-            return 0.12/360
+    if day == 90:
+        return 0.07/90
+   if day == 150:
+        return 0.08/150
+    if day == 180:
+        return 0.09/180
+    if day == 240:
+        return 0.1/240
+    if day == 300:
+        return 0.11/300
+    if day == 360:
+        return 0.12/360
     
 
 def handler404(req, *args, **argv):
