@@ -83,10 +83,10 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'BNB',
-        'USER': 'BNB$bnb_kingdom',
-        'PASSWORD':'bnbwww123' ,
-        'HOST': 'BNB.mysql.pythonanywhere-services.com',
+        'NAME': 'bnb556$bnb_kingdom',
+        'USER': 'bnb556',
+        'PASSWORD':'bnb123456789' ,
+        'HOST': 'bnb556.mysql.pythonanywhere-services.com',
        
     }
 }
