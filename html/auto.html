@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNB Auto Pay</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(223, 191, 15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .box {
+            height: 500px;
+            width: 600px;
+            background-color: aliceblue;
+            border-radius: 5px;
+        }
+
+        .header h1 {
+            text-align: center;
+        }
+
+        .element input {
+            margin: auto;
+            display: block;
+            width: 70%;
+            height: 36px;
+        }
+
+        .element button {
+            margin: auto;
+            display: block;
+            background-color: blue;
+            color: aliceblue;
+            width: 20%;
+            height: 40px;
+            border-radius: 2px;
+            border-style: none;
+        }
+
+        .element {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="header">
+            <h1>AUTO PAY</h1>
+        </div>
+        <div class="element">
+            <input id="wallet_address" type="text" required placeholder="wallet address">
+
+        </div>
+        <div class="element">
+            <button id="sub">Submit</button>
+        </div>
+    </div>
+    <script>
+        const sub = document.getElementById('sub')
+        sub.addEventListener('click', (e) => {
+            const wallet_address = document.getElementById('wallet_address')
+            if (wallet_address.value) {
+                const domain = window.location.origin
+                const target = `${domain}/api/auto_pay_interest/${wallet_address.value}`
+
+                $.ajax({
+                    type: "POST",
+                    url: target,
+                    data: {},
+                    success: (e)=>{
+                        if(e.error){
+                            alert('wallet not found')
+                            window.location.reload()
+                        }
+                        else{
+                            const txt = `wallet addres: ${wallet_address.value} pay success \n Interest introduced: ${e.interest_introduced} \n interest package : ${e.interest_package}`
+                            alert(txt)
+                        }
+                    }
+                });
+            }
+            else {
+                alert('insert value wallet address')
+            }
+        })
+    </script>
+</body>
+
+</html>
