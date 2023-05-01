@@ -83,7 +83,7 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'BNB.mysql.pythonanywhere-services.com',
         'NAME': 'BNB',
         'USER': 'BNB$bnb_kingdom',
         'PASSWORD': '123456789@',
