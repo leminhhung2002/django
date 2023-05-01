@@ -88,7 +88,7 @@ DATABASES = {
         'USER': 'BNB$bnb_kingdom',
         'PASSWORD': '123456789@',
         'HOST': 'BNB.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
+       
     }
 }
 
