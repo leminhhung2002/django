@@ -289,7 +289,7 @@ def auto_pay_interest(req, wallet_address ):
     })
 
 def calc_percent_introduced(F_introduction):
-    match F:
+    match F_introduction:
         case 'F1':
             return 0.08
         case 'F2':
