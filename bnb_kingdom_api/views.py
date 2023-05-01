@@ -288,7 +288,7 @@ def auto_pay_interest(req, wallet_address ):
         "error": 'sorry'
     })
 
-def calc_percent_introduced(F):
+def calc_percent_introduced(F_introduction):
     match F:
         case 'F1':
             return 0.08
