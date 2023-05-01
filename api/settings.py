@@ -85,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'BNB',
-        'USER': 'BNB$bnb_kingdom',
+        'USER': 'bnb_kingdom',
         'PASSWORD': '123456789@',
         'HOST': 'BNB.mysql.pythonanywhere-services.com',
        
