@@ -237,10 +237,10 @@ def introduce(req, wallet_address, wallet_address_introduced):
             "message": "Method not allowed.",
             "error_type": "method_not_allowed"
         }, status=405)
-    vefify = models.Introduction.objects.filter(wallet_address_introduced = wallet_address_introduced)
-    if not vefify:
+    check_wallet = models.Introduction.objects.filter(wallet_address_introduced = wallet_address).values()
+    if not check_wallet:
         total_introduction_F = models.Introduction.objects.filter(wallet_address = wallet_address).count()
-        if total_introduction_F + 1 < 100:
+        if total_introduction_F + 1 < 10:
             introduction_F = models.Introduction(
                 wallet_address = wallet_address,
                 wallet_address_introduced = wallet_address_introduced,
@@ -248,7 +248,24 @@ def introduce(req, wallet_address, wallet_address_introduced):
             )
             introduction_F.save()
             return JsonResponse({'success':'action'})
-    return JsonResponse({'error':'not action'})
+        else:
+            return JsonResponse({'error':'not action'})
+    else:
+        check_wallet = models.Introduction.objects.filter(wallet_address_introduced = wallet_address).values()
+        total_introduction_F = models.Introduction.objects.filter(wallet_address = check_wallet[0]['wallet_address']).count()
+        if total_introduction_F + 1 < 10:
+            introduction_F = models.Introduction(
+                wallet_address = check_wallet[0]['wallet_address'],
+                wallet_address_introduced = wallet_address_introduced,
+                F_ratings = 'F{}'.format(total_introduction_F + 1)
+            )
+            dk_insert = models.Introduction.objects.filter(wallet_address_introduced = wallet_address_introduced)
+            if not dk_insert:
+                introduction_F.save()
+                return JsonResponse({'success':'action'})
+            return JsonResponse({'error':'not insert DB'})
+        else:
+            return JsonResponse({'error':'not action'})
 @csrf_exempt
 def auto_pay_interest(req, wallet_address ):
     if req.method != 'POST':
@@ -256,37 +273,37 @@ def auto_pay_interest(req, wallet_address ):
             "message": "Method not allowed.",
             "error_type": "method_not_allowed"
         }, status=405)
-    object_introductions = models.Introduction.objects.filter(wallet_address_introduced= wallet_address)
-
-    if object_introductions:
-        #F1 cua nhieu thang
-        for row in object_introductions:
-            F_rating = calc_percent_introduced(row.F_ratings)
-            wallet = row.wallet_address
-            object_by_history = models.BuyHistory.objects.all()
-            buyed= False
-            for record in object_by_history:
-                if buyed == False:
-                    if record.user.wallet_address == wallet_address:
-                        buyed = True
-                        package_by = record.package_selected
-                        amount = record.amount_bnb        
-                        interest_introduced = amount * F_rating
-                        interest_package = amount * calc_day(package_by)
-                        pay = models.PayInterest(wallet_address = wallet,
-                        interest_introduced = interest_introduced,
-                        interest_package = interest_package)
-                        # pay.save()
+    if(wallet_address == 'xxx123'):
+        all_data_introduction = models.Introduction.objects.all()
+        all_data_history = models.BuyHistory.objects.all()
+        for introduction in all_data_introduction:
+            F_rating = calc_percent_introduced(introduction.F_ratings)
+            wallet = introduction.wallet_address
+            for history in all_data_history:
+                if(history.user.wallet_address == introduction.wallet_address_introduced):
+                    print('yes')
+                    print(introduction.wallet_address_introduced)
+                    package_by = history.package_selected
+                    amount = history.amount_bnb        
+                    interest_introduced = amount * F_rating
+                    interest_package =  amount *  calc_day(package_by)
+                    pay = models.PayInterest(wallet_address = wallet,
+                    interest_introduced = interest_introduced,
+                    interest_package = interest_package)
+                    pay.save()
                 else:
-                    return
-        return JsonResponse({
-        "message": 'auto action done',
-        "interest_introduced": interest_introduced,
-        "interest_package": interest_package
-    })
-    return JsonResponse({
-        "error": 'sorry'
-    })
+                    print('no')
+                    print(introduction.wallet_address_introduced)
+            
+        return JsonResponse(
+            {
+            "message": 'auto action done'
+            })
+    else:
+        return JsonResponse(
+            {
+            "message": 'auth fail',
+            })
 
 def calc_percent_introduced(F):
     if F == 'F1':
