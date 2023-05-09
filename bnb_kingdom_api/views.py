@@ -328,17 +328,17 @@ def calc_percent_introduced(F):
         return 0.005
 def calc_day(day):
     if day == 90:
-        return 0.07/90
+        return 0.21
     if day == 150:
-        return 0.08/150
+        return 0.4
     if day == 180:
-        return 0.09/180
+        return 0.54
     if day == 240:
-        return 0.1/240
+        return 0.8
     if day == 300:
-        return 0.11/300
+        return 1.1
     if day == 360:
-        return 0.12/360
+        return 1.44
     
 
 def handler404(req, *args, **argv):
