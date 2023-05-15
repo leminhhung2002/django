@@ -2,3 +2,5 @@ django
 
 mysqlclient
 python-dateutil
+
+#new code
