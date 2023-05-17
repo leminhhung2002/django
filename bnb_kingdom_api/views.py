@@ -232,40 +232,60 @@ def show_person_below_introduced(req):
 
 @csrf_exempt
 def introduce(req, wallet_address, wallet_address_introduced):
+    # INPUT 
+    # wallet 1 => parent
+    # wallet 2 => child
     if req.method != 'GET':
         return JsonResponse({
             "message": "Method not allowed.",
             "error_type": "method_not_allowed"
         }, status=405)
-    check_wallet = models.Introduction.objects.filter(wallet_address_introduced = wallet_address).values()
-    if not check_wallet:
-        total_introduction_F = models.Introduction.objects.filter(wallet_address = wallet_address).count()
-        if total_introduction_F + 1 < 10:
-            introduction_F = models.Introduction(
-                wallet_address = wallet_address,
-                wallet_address_introduced = wallet_address_introduced,
-                F_ratings = 'F{}'.format(total_introduction_F + 1)
-            )
-            introduction_F.save()
-            return JsonResponse({'success':'action'})
-        else:
-            return JsonResponse({'error':'not action'})
+    wallet_address_introduction_by_children = models.Introduction.objects.filter(wallet_address_introduced = wallet_address)
+    if wallet_address_introduction_by_children.count() == 0:
+        index_f = 0
+        introduction_F = models.Introduction(
+            wallet_address = wallet_address,
+            wallet_address_introduced = wallet_address_introduced,
+            F_ratings = 'F{}'.format(index_f + 1)
+        )
+        introduction_F.save()
+        return JsonResponse({'success':'action 1'})
     else:
-        check_wallet = models.Introduction.objects.filter(wallet_address_introduced = wallet_address).values()
-        total_introduction_F = models.Introduction.objects.filter(wallet_address = check_wallet[0]['wallet_address']).count()
-        if total_introduction_F + 1 < 10:
-            introduction_F = models.Introduction(
-                wallet_address = check_wallet[0]['wallet_address'],
-                wallet_address_introduced = wallet_address_introduced,
-                F_ratings = 'F{}'.format(total_introduction_F + 1)
-            )
-            dk_insert = models.Introduction.objects.filter(wallet_address_introduced = wallet_address_introduced)
-            if not dk_insert:
-                introduction_F.save()
-                return JsonResponse({'success':'action'})
-            return JsonResponse({'error':'not insert DB'})
-        else:
-            return JsonResponse({'error':'not action'})
+        index_f = 1
+        all_data_introduction = models.Introduction.objects.all().values()
+        for data in all_data_introduction:
+            if(data['wallet_address_introduced'] == wallet_address):
+                print('F', data['F_ratings'])
+                print('yes')
+                introduction_F = models.Introduction(
+                        wallet_address = data['wallet_address'],
+                        wallet_address_introduced = wallet_address_introduced,
+                        F_ratings = 'F{}'.format(convert_F_to_number(data['F_ratings']) + 1))
+                dk_insert = models.Introduction.objects.filter(wallet_address_introduced = wallet_address_introduced)
+                if not dk_insert:
+                    introduction_F.save()
+                    return JsonResponse({'success':'action 2'})
+            
+        # calc_index = models.Introduction.objects.filter(wallet_address_introduced = wallet_address_introduction_by_children.values()[0]['wallet_address_introduced'])
+        # for i in range (0,100,1): 
+        #     if calc_index.count() == 1:
+        #         calc_index = models.Introduction.objects.filter(wallet_address_introduced = calc_index.values()[0]['wallet_address_introduced']) 
+            
+        #     else:
+        #         print('hel')
+        # check_wallet = models.Introduction.objects.filter(wallet_address_introduced = wallet_address).values()
+        # total_introduction_F = models.Introduction.objects.filter(wallet_address = check_wallet.values()[0]['wallet_address']).count()
+        # introduction_F = models.Introduction(
+        #         wallet_address = check_wallet[0]['wallet_address'],
+        #         wallet_address_introduced = wallet_address_introduced,
+        #         F_ratings = 'F{}'.format(total_introduction_F + 1)
+        #     )
+        # dk_insert = models.Introduction.objects.filter(wallet_address_introduced = wallet_address_introduced)
+        # if not dk_insert:
+        #     introduction_F.save()
+        #     return JsonResponse({'success':'action 2'})
+        return JsonResponse({'error':'not insert DB'})
+       
 @csrf_exempt
 def auto_pay_interest(req, wallet_address ):
     if req.method != 'POST':
@@ -339,6 +359,29 @@ def calc_day(day):
         return 1.1
     if day == 360:
         return 1.44
+    
+
+def convert_F_to_number(F):
+    if F == 'F1':
+        return 1
+    if F == 'F2':
+        return 2
+    if F == 'F3':
+        return 3
+    if F == 'F4':
+        return 4
+    if F == 'F5':
+        return 5
+    if F == 'F6':
+        return 6
+    if F == 'F7':
+        return 7
+    if F == 'F8':
+        return 8
+    if F == 'F9':
+        return 9
+    if F == 'F10':
+        return 10
     
 
 def handler404(req, *args, **argv):
