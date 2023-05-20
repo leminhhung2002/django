@@ -83,14 +83,25 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
+    #production
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bnb556$bnb_kingdom',
-        'USER': 'bnb556',
-        'PASSWORD':'bnb123456789' ,
-        'HOST': 'bnb556.mysql.pythonanywhere-services.com',
+        'NAME': 'bnb557$bnb_kingdom',
+        'USER': 'bnb557',
+        'PASSWORD':'123456789@' ,
+        'HOST': 'bnb557.mysql.pythonanywhere-services.com',
        
     }
+    #dev
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'bnb_kingdom',
+    #     'USER': 'root',
+    #     'PASSWORD': 'password',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+       
+    # }
 }
 
 
